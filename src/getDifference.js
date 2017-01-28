@@ -62,14 +62,33 @@ const getObjectChanges = (o1, o2) => {
   return finalOutput
 }
 
-const getDiffBetween(l1, l2) {
+const getDiffBetween = (l1, l2) => {
 
-  //compare id to id
+  let lookupListOfObjects = {} //used in case ids are not ordered in l1
+  for (var i = 0; i < l1.length; i++) {
+    lookupListOfObjects[l1[i].id] = l1[i]
+  }
+
+  // console.log(lookupListOfObjects.hasOwnProperty(l2[0]['id']))
+  // console.log(lookupListOfObjects.hasOwnProperty(l2[1]['id']))
+
+  var output = l2.filter((record) => {
+    console.log(record.id, 'first log');
+    if(l1.hasOwnProperty(record['id'])) {
+      console.log('gets to if');
+      console.log(record.id, (getObjectChanges(lookupListOfObjects[record.id], record)))
+    } else {
+      console.log('gets to else');
+    }
+  }, [])
+
+  return output
+  // compare id to id
     //1 1
     //2 2
     //3 4 no match so add delete obj
     // at the end of the array, if list b has id=10 but list a maxes at id=9 then create add obj
 }
 
-
-console.log(getObjectChanges(list[0],updatedList[0]))
+console.log(getDiffBetween(list, updatedList));
+// console.log(getObjectChanges(list[0],updatedList[0]))
