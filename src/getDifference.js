@@ -1,58 +1,5 @@
+import {list, updatedList} from './testData'
 const _ = require('lodash')
-const list = [
-  {
-    id       : 1,
-    name     : 'Barbara',
-    quantity : 3,
-    newProp  : {a: 1, b: 2, c: {a: 1, b:2, c:4}}
-  },
-  {
-    id       : 2,
-    name     : 'Tom',
-    quantity : 0,
-  },
-  {
-    id       : 3,
-    name     : 'Sam',
-    quantity : 1,
-  },
-];
-
-const updatedList = [
-  // barb's name is changing
-  {
-    id       : 1,
-    name     : 'Barb',
-    quantity : 3,
-    newProp  : {a: 1, b: 2, c: {a: 1, b:2, c:3}}
-  },
-
-  // sam's quantity is changing
-  {
-    id       : 3,
-    name     : 'Sam',
-    quantity : 8,
-  },
-
-  // tom has been deleted
-
-  // nelson is being added
-  {
-    id       : 4,
-    name     : 'Nelson',
-    quantity : 6,
-  },
-  {
-    id       : 5,
-    name     : 'Nelson',
-    quantity : 6,
-  },
-  {
-    id       : 6,
-    name     : 'Nelson',
-    quantity : 6,
-  },
-];
 
 const getDiffBetween = (l1, l2) => {
   const finalOutput = []
@@ -64,7 +11,6 @@ const getDiffBetween = (l1, l2) => {
       finalOutput.push(generatedAddedObject)
     }
   })
-  //look for deleted records
   l1.filter((record) => {
     if(!recordLookupList.hasOwnProperty(record['id'])) {
       const generatedDeletedObject = generateDeleteObject(record)
@@ -77,7 +23,6 @@ const getDiffBetween = (l1, l2) => {
     }
   })
   return _.sortBy(finalOutput, 'id')
-  // return finalOutput
 }
 
 const deepDiff = (o1, o2) => {
@@ -138,5 +83,4 @@ const objectLookupList = (list) => {
   return outputList
 }
 
-// console.log(getObjectDeepDiff(list[0], updatedList[0]));
 console.log(getDiffBetween(list, updatedList))
