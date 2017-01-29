@@ -42,18 +42,45 @@ const updatedList = [
     name     : 'Nelson',
     quantity : 6,
   },
+  {
+    id       : 5,
+    name     : 'Nelson',
+    quantity : 6,
+  },
+  {
+    id       : 6,
+    name     : 'Nelson',
+    quantity : 6,
+  },
 ];
 
 const getDiffBetween = (l1, l2) => {
+  const finalOutput = []
   const maxId = getMaxId(l1)
-  l2.filter( (record) => {
-    
+  const recordLookupList = objectLookupList(l2)
+  l2.filter((record) => {
+    if(record['id'] > maxId) {
+      const generatedAddedObject = generateAddObject(record)
+      finalOutput.push(generatedAddedObject)
+    }
   })
-
-  return finalOutput
+  //look for deleted records
+  l1.filter((record) => {
+    if(!recordLookupList.hasOwnProperty(record['id'])) {
+      const generatedDeletedObject = generateDeleteObject(record)
+      finalOutput.push(generatedDeletedObject)
+    } else {
+      const changeInRecord = deepDiff(record, recordLookupList[record['id']])
+      if(!_.isEmpty(changeInRecord)) {
+        finalOutput.push(changeInRecord)
+      }
+    }
+  })
+  return _.sortBy(finalOutput, 'id')
+  // return finalOutput
 }
 
-const getObjectDeepDiff = (o1, o2) => {
+const deepDiff = (o1, o2) => {
   let finalOutput = {}
   const allKeys = _.union(Object.keys(o1), Object.keys(o2))
   const changedProps = allKeys.reduce( (output, currentKey) => {
@@ -70,8 +97,8 @@ const getObjectDeepDiff = (o1, o2) => {
   return finalOutput
 }
 
-const getMaxId = (l1) => {
-  const maxId = l1.reduce( (output, currentRecord, currentIndex, array) => {
+const getMaxId = (list) => {
+  const maxId = list.reduce( (output, currentRecord, currentIndex, array) => {
     if(currentRecord['id'] > output) {
       output = currentRecord['id']
     }
@@ -100,6 +127,15 @@ const generateAddObject = (record) => {
     type: 'ADD',
     id: record['id']
   }
+}
+
+const objectLookupList = (list) => {
+  let outputList = {}
+  for (var i = 0; i < list.length; i++) {
+    outputList[list[i]['id']] = list[i]
+  }
+
+  return outputList
 }
 
 // console.log(getObjectDeepDiff(list[0], updatedList[0]));
