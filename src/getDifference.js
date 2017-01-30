@@ -70,7 +70,8 @@ const generateChangeObject = (id, changedProps) => {
 const generateAddObject = (record) => {
   return {
     type: 'ADD',
-    id: record['id']
+    id: record['id'],
+    changedProps: record
   }
 }
 
