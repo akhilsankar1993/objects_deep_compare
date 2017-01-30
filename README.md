@@ -12,4 +12,4 @@ To run this locally, from within the working directory, run:
   - `node lib/getDifference.js`
 
 Response of `getDiffBetween(list, updatedList) when I running this algorithm with the provided dataset:
-[Object Deep Diff Response](./getDiffBetween.png)
+![Object Deep Diff Response](./getDiffBetween.png)
